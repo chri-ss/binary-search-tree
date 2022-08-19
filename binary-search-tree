@@ -4,3 +4,7 @@ const Node = (value) => {
   return { value, left, right };
 };
 
+const Tree = (arr) => {
+  root: buildTree();
+  return { root };
+};
