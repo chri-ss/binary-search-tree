@@ -35,6 +35,18 @@ const mergesort = (arr) => {
   return merge(left, right);
 };
 
+//helper to remove duplicates from array
+
+const removeDuplicates = (arr) => {
+  let newArr = [];
+  arr.forEach((el) => {
+    if (!newArr.includes(el)) {
+      newArr.push(el);
+    }
+  });
+  return newArr;
+};
+
 //Node factory
 
 const Node = (value) => {
@@ -46,7 +58,7 @@ const Node = (value) => {
 //Tree factory
 
 const Tree = (arr) => {
-  arr = mergesort(arr);
+  arr = removeDuplicates(mergesort(arr));
   console.log(arr);
   const buildTree = () => {
     let mid = arr[Math.floor(arr.length / 2)];
