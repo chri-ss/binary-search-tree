@@ -1,10 +1,64 @@
+// helpers to sort array
+
+const merge = (left, right) => {
+  let newArr = [];
+  while (left.length > 0 && right.length > 0) {
+    if (left[0] <= right[0]) {
+      newArr.push(left[0]);
+      left.shift();
+    } else {
+      newArr.push(right[0]);
+      right.shift();
+    }
+  }
+
+  while (left.length > 0) {
+    newArr.push(left[0]);
+    left.shift();
+  }
+  while (right.length > 0) {
+    newArr.push(right[0]);
+    right.shift();
+  }
+  return newArr;
+};
+
+const mergesort = (arr) => {
+  if (arr.length < 2) {
+    return arr;
+  }
+  let left = arr.slice(0, Math.floor(arr.length / 2));
+  let right = arr.slice(Math.floor(arr.length / 2));
+  left = mergesort(left);
+  right = mergesort(right);
+
+  return merge(left, right);
+};
+
+//Node factory
+
 const Node = (value) => {
   let left = null;
   let right = null;
   return { value, left, right };
 };
 
+//Tree factory
+
 const Tree = (arr) => {
-  root: buildTree();
+  arr = mergesort(arr);
+  console.log(arr);
+  const buildTree = () => {
+    let mid = arr[Math.floor(arr.length / 2)];
+    const newRoot = Node(mid);
+    newRoot.left = arr.slice(0, arr.length / 2);
+    newRoot.right = arr.slice(arr.length / 2 + 1, arr.length);
+    return newRoot;
+  };
+  const root = buildTree();
   return { root };
 };
+
+const newTree = Tree([5, 21, 4, 5, 2, 1, 19, 16, 3]);
+
+console.log(newTree.root);
