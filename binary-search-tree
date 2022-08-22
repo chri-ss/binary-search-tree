@@ -57,23 +57,25 @@ const Node = (value) => {
 
 //Tree factory
 
-const buildTree = (arr, start, end) => {
-  console.log(arr);
-  if (start > end) {
-    return null;
-  }
-  let mid = Math.floor((start + end) / 2);
-  const newRoot = Node(arr[mid]);
-
-  newRoot.left = buildTree(arr, start, mid - 1);
-  newRoot.right = buildTree(arr, mid + 1, end);
-
-  return newRoot;
-};
-
 const Tree = (arr) => {
   arr = removeDuplicates(mergesort(arr));
+
+  const buildTree = (arr, start, end) => {
+    console.log(arr);
+    if (start > end) {
+      return null;
+    }
+    let mid = Math.floor((start + end) / 2);
+    const newRoot = Node(arr[mid]);
+
+    newRoot.left = buildTree(arr, start, mid - 1);
+    newRoot.right = buildTree(arr, mid + 1, end);
+
+    return newRoot;
+  };
+
   const root = buildTree(arr, 0, arr.length - 1);
+
   return { root };
 };
 
