@@ -61,7 +61,6 @@ const Tree = (arr) => {
   arr = removeDuplicates(mergesort(arr));
 
   const buildTree = (arr, start, end) => {
-    console.log(arr);
     if (start > end) {
       return null;
     }
@@ -76,9 +75,24 @@ const Tree = (arr) => {
 
   const root = buildTree(arr, 0, arr.length - 1);
 
-  return { root };
+  const insert = (root, value) => {
+    if (root === null) {
+      root = Node(value);
+      return root;
+    }
+    if (value < root.value) {
+      root.left = insert(root.left, value);
+    } else if (value > root.value) {
+      root.right = insert(root.right, value);
+    }
+    return root;
+  };
+
+  return { root, insert };
 };
 
 const newTree = Tree([5, 21, 4, 5, 2, 1, 19, 16, 3]);
 
+console.dir(newTree, { depth: null, colors: true });
+newTree.insert(newTree.root, 13);
 console.dir(newTree, { depth: null, colors: true });
