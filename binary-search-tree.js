@@ -47,6 +47,18 @@ const removeDuplicates = (arr) => {
   return newArr;
 };
 
+//pretty print
+
+const prettyPrint = (node, prefix = "", isLeft = true) => {
+  if (node.right !== null) {
+    prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
+  }
+  console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.value}`);
+  if (node.left !== null) {
+    prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
+  }
+};
+
 //Node factory
 
 const Node = (value) => {
@@ -93,6 +105,6 @@ const Tree = (arr) => {
 
 const newTree = Tree([5, 21, 4, 5, 2, 1, 19, 16, 3]);
 
-console.dir(newTree, { depth: null, colors: true });
+prettyPrint(newTree.root);
 newTree.insert(newTree.root, 13);
-console.dir(newTree, { depth: null, colors: true });
+prettyPrint(newTree.root);
