@@ -113,6 +113,8 @@ const Tree = (arr) => {
         root = null;
       } else if (root.right === null && root.left) {
         root = root.left;
+      } else if (root.left === null && root.right) {
+        root = root.right;
       }
     }
     return root;
@@ -128,4 +130,7 @@ newTree.insertNode(newTree.root, 13);
 prettyPrint(newTree.root);
 
 newTree.deleteNode(newTree.root, 13);
+prettyPrint(newTree.root);
+
+newTree.deleteNode(newTree.root, 19);
 prettyPrint(newTree.root);
