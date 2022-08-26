@@ -87,24 +87,45 @@ const Tree = (arr) => {
 
   const root = buildTree(arr, 0, arr.length - 1);
 
-  const insert = (root, value) => {
+  const insertNode = (root, value) => {
     if (root === null) {
       root = Node(value);
       return root;
     }
     if (value < root.value) {
-      root.left = insert(root.left, value);
+      root.left = insertNode(root.left, value);
     } else if (value > root.value) {
-      root.right = insert(root.right, value);
+      root.right = insertNode(root.right, value);
     }
     return root;
   };
 
-  return { root, insert };
+  const deleteNode = (root, value) => {
+    if (root === null) {
+      return;
+    }
+    if (value < root.value) {
+      root.left = deleteNode(root.left, value);
+    } else if (value > root.value) {
+      root.right = deleteNode(root.right, value);
+    } else {
+      if (root.left === null && root.right === null) {
+        root = null;
+      } else if (root.right === null && root.left) {
+        root = root.left;
+      }
+    }
+    return root;
+  };
+
+  return { root, insertNode, deleteNode };
 };
 
 const newTree = Tree([5, 21, 4, 5, 2, 1, 19, 16, 3]);
 
 prettyPrint(newTree.root);
-newTree.insert(newTree.root, 13);
+newTree.insertNode(newTree.root, 13);
+prettyPrint(newTree.root);
+
+newTree.deleteNode(newTree.root, 13);
 prettyPrint(newTree.root);
