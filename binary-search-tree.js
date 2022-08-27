@@ -100,6 +100,25 @@ const Tree = (arr) => {
     return root;
   };
 
+  const findSuccessor = (node) => {
+    let temp;
+    if (
+      (node.left === null && node.right === null) ||
+      (node.left === null && node.right)
+    ) {
+      return node;
+    } else if (
+      (node.right === null && node.left) ||
+      (node.left && node.right)
+    ) {
+      temp = node.left;
+      node.left = null;
+      return findSuccessor(temp);
+    } else {
+      return findSuccessor(node.right);
+    }
+  };
+
   const deleteNode = (root, value) => {
     if (root === null) {
       return;
@@ -115,6 +134,8 @@ const Tree = (arr) => {
         root = root.left;
       } else if (root.left === null && root.right) {
         root = root.right;
+      } else if (root.left && root.right) {
+        root.value = findSuccessor(root.right).value;
       }
     }
     return root;
@@ -132,5 +153,8 @@ prettyPrint(newTree.root);
 newTree.deleteNode(newTree.root, 13);
 prettyPrint(newTree.root);
 
-newTree.deleteNode(newTree.root, 19);
+newTree.insertNode(newTree.root, 17);
+prettyPrint(newTree.root);
+
+newTree.deleteNode(newTree.root, 4);
 prettyPrint(newTree.root);
