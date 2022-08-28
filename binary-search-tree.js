@@ -112,7 +112,13 @@ const Tree = (arr) => {
       (node.left && node.right)
     ) {
       temp = node.left;
-      node.left = null;
+      if ((temp.left && temp.right === null) || (temp.left && temp.right)) {
+        node.left = temp.left;
+      } else if (temp.left === null && temp.right) {
+        node.left = temp.right;
+      } else {
+        node.left = null;
+      }
       return findSuccessor(temp);
     } else {
       return findSuccessor(node.right);
@@ -156,5 +162,9 @@ prettyPrint(newTree.root);
 newTree.insertNode(newTree.root, 17);
 prettyPrint(newTree.root);
 
+newTree.insertNode(newTree.root, 6);
+prettyPrint(newTree.root);
+
 newTree.deleteNode(newTree.root, 4);
+
 prettyPrint(newTree.root);
