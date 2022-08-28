@@ -147,7 +147,20 @@ const Tree = (arr) => {
     return root;
   };
 
-  return { root, insertNode, deleteNode };
+  const find = (value, node = root) => {
+    if (value === node.value) {
+      return node;
+    }
+    if (node.left === null && node.right === null) {
+      return;
+    } else if (value < node.value) {
+      return find(value, node.left);
+    } else if (value > node.value) {
+      return find(value, node.right);
+    }
+  };
+
+  return { root, insertNode, deleteNode, find };
 };
 
 const newTree = Tree([5, 21, 4, 5, 2, 1, 19, 16, 3]);
@@ -166,5 +179,6 @@ newTree.insertNode(newTree.root, 6);
 prettyPrint(newTree.root);
 
 newTree.deleteNode(newTree.root, 4);
-
 prettyPrint(newTree.root);
+
+console.log(newTree.find(3));
