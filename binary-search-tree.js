@@ -162,10 +162,15 @@ const Tree = (arr) => {
 
   const levelOrder = (fn) => {
     let q = [];
+    let noFunc = [];
     q.push(root);
     while (q.length > 0) {
       let node = q.pop();
-      fn(node);
+      if (fn) {
+        fn(node);
+      } else {
+        noFunc.push(node.value);
+      }
       if (node.left) {
         q.unshift(node.left);
       }
@@ -173,6 +178,7 @@ const Tree = (arr) => {
         q.unshift(node.right);
       }
     }
+    return noFunc;
   };
 
   return { root, insertNode, deleteNode, find, levelOrder };
@@ -199,3 +205,4 @@ prettyPrint(newTree.root);
 console.log(newTree.find(3));
 
 newTree.levelOrder((node) => console.log(node.value));
+console.log(newTree.levelOrder());
