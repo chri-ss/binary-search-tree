@@ -160,7 +160,22 @@ const Tree = (arr) => {
     }
   };
 
-  return { root, insertNode, deleteNode, find };
+  const levelOrder = (fn) => {
+    let q = [];
+    q.push(root);
+    while (q.length > 0) {
+      let node = q.pop();
+      fn(node);
+      if (node.left) {
+        q.unshift(node.left);
+      }
+      if (node.right) {
+        q.unshift(node.right);
+      }
+    }
+  };
+
+  return { root, insertNode, deleteNode, find, levelOrder };
 };
 
 const newTree = Tree([5, 21, 4, 5, 2, 1, 19, 16, 3]);
@@ -182,3 +197,5 @@ newTree.deleteNode(newTree.root, 4);
 prettyPrint(newTree.root);
 
 console.log(newTree.find(3));
+
+newTree.levelOrder((node) => console.log(node.value));
