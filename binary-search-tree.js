@@ -226,6 +226,16 @@ const Tree = (arr) => {
     }
   };
 
+  const postorder = (fn, node = root) => {
+    if (node.left === null && node.right === null) {
+      return fn(node);
+    }
+    if (node.left && node.right) {
+      postorder(fn, node.left);
+      postorder(fn, node.right);
+      fn(node);
+    }
+  };
   return {
     root,
     insertNode,
@@ -235,6 +245,7 @@ const Tree = (arr) => {
     levelOrderRec,
     inorder,
     preorder,
+    postorder,
   };
 };
 
@@ -262,4 +273,5 @@ console.log(newTree.find(3));
 // console.log(newTree.levelOrder());
 // newTree.levelOrderRec((node) => console.log(node.value));
 // newTree.inorder((node) => console.log(node.value));
-newTree.preorder((node) => console.log(node.value));
+// newTree.preorder((node) => console.log(node.value));
+newTree.postorder((node) => console.log(node.value));
