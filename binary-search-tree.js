@@ -160,7 +160,106 @@ const Tree = (arr) => {
     }
   };
 
-  return { root, insertNode, deleteNode, find };
+  const levelOrder = (fn) => {
+    let q = [];
+    let noFunc = [];
+    q.push(root);
+    while (q.length > 0) {
+      let node = q.pop();
+      if (fn) {
+        fn(node);
+      } else {
+        noFunc.push(node.value);
+      }
+      if (node.left) {
+        q.unshift(node.left);
+      }
+      if (node.right) {
+        q.unshift(node.right);
+      }
+    }
+    return noFunc;
+  };
+
+  const levelOrderRec = (fn, node = root, q = []) => {
+    q.push(node);
+    fn(q.pop());
+
+    if (node.left && node.right) {
+      q.unshift(node.left);
+      q.unshift(node.right);
+    } else if (node.left) {
+      q.unshift(node.left);
+    } else if (node.right) {
+      q.unshift(node.right);
+    } else {
+      if (q.length < 1) {
+        return;
+      }
+      return levelOrderRec(fn, q.pop(), q);
+    }
+    return levelOrderRec(fn, q.pop(), q);
+  };
+
+  const defaultFunc = (node, arr = []) => {
+    arr.push(node.value);
+  };
+
+  const inorder = (fn = defaultFunc, node = root, noFunc = []) => {
+    if (node.left === null && node.right === null) {
+      return fn(node, noFunc);
+    }
+    if (node.left && node.right) {
+      inorder(fn, node.left, noFunc);
+      fn(node, noFunc);
+      inorder(fn, node.right, noFunc);
+    } else if (node.left && node.right === null) {
+      inorder(fn, node.left, noFunc);
+      fn(node, noFunc);
+    } else if (node.right && node.left === null) {
+      inorder(fn, node.right, noFunc);
+      fn(node, noFunc);
+    }
+    if (node === root) {
+      return console.log(noFunc);
+    }
+  };
+
+  const preorder = (fn = defaultFunc, node = root, noFunc = []) => {
+    fn(node, noFunc);
+    if (node.left && node.right) {
+      preorder(fn, node.left, noFunc);
+      preorder(fn, node.right, noFunc);
+    }
+    if (node === root) {
+      return console.log(noFunc);
+    }
+  };
+
+  const postorder = (fn = defaultFunc, node = root, noFunc = []) => {
+    if (node.left === null && node.right === null) {
+      return fn(node, noFunc);
+    }
+    if (node.left && node.right) {
+      postorder(fn, node.left, noFunc);
+      postorder(fn, node.right, noFunc);
+      fn(node, noFunc);
+    }
+    if (node === root) {
+      return console.log(noFunc);
+    }
+  };
+  return {
+    root,
+    insertNode,
+    deleteNode,
+    find,
+    levelOrder,
+    levelOrderRec,
+    inorder,
+    preorder,
+    postorder,
+  };
 };
 
 const newTree = Tree([5, 21, 4, 5, 2, 1, 19, 16, 3]);
@@ -182,3 +281,13 @@ newTree.deleteNode(newTree.root, 4);
 prettyPrint(newTree.root);
 
 console.log(newTree.find(3));
+
+// newTree.levelOrder((node) => console.log(node.value));
+// console.log(newTree.levelOrder());
+// newTree.levelOrderRec((node) => console.log(node.value));
+newTree.inorder((node) => console.log(node.value));
+newTree.inorder();
+newTree.preorder((node) => console.log(node.value));
+newTree.preorder();
+newTree.postorder((node) => console.log(node.value));
+newTree.postorder();
