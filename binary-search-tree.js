@@ -201,39 +201,52 @@ const Tree = (arr) => {
     return levelOrderRec(fn, q.pop(), q);
   };
 
-  const inorder = (fn, node = root) => {
+  const defaultFunc = (node, arr = []) => {
+    arr.push(node.value);
+  };
+
+  const inorder = (fn = defaultFunc, node = root, noFunc = []) => {
     if (node.left === null && node.right === null) {
-      return fn(node);
+      return fn(node, noFunc);
     }
     if (node.left && node.right) {
-      inorder(fn, node.left);
-      fn(node);
-      inorder(fn, node.right);
+      inorder(fn, node.left, noFunc);
+      fn(node, noFunc);
+      inorder(fn, node.right, noFunc);
     } else if (node.left && node.right === null) {
-      inorder(fn, node.left);
-      fn(node);
+      inorder(fn, node.left, noFunc);
+      fn(node, noFunc);
     } else if (node.right && node.left === null) {
-      inorder(fn, node.right);
-      fn(node);
+      inorder(fn, node.right, noFunc);
+      fn(node, noFunc);
+    }
+    if (node === root) {
+      return console.log(noFunc);
     }
   };
 
-  const preorder = (fn, node = root) => {
-    fn(node);
+  const preorder = (fn = defaultFunc, node = root, noFunc = []) => {
+    fn(node, noFunc);
     if (node.left && node.right) {
-      preorder(fn, node.left);
-      preorder(fn, node.right);
+      preorder(fn, node.left, noFunc);
+      preorder(fn, node.right, noFunc);
+    }
+    if (node === root) {
+      return console.log(noFunc);
     }
   };
 
-  const postorder = (fn, node = root) => {
+  const postorder = (fn = defaultFunc, node = root, noFunc = []) => {
     if (node.left === null && node.right === null) {
-      return fn(node);
+      return fn(node, noFunc);
     }
     if (node.left && node.right) {
-      postorder(fn, node.left);
-      postorder(fn, node.right);
-      fn(node);
+      postorder(fn, node.left, noFunc);
+      postorder(fn, node.right, noFunc);
+      fn(node, noFunc);
+    }
+    if (node === root) {
+      return console.log(noFunc);
     }
   };
   return {
@@ -272,6 +285,9 @@ console.log(newTree.find(3));
 // newTree.levelOrder((node) => console.log(node.value));
 // console.log(newTree.levelOrder());
 // newTree.levelOrderRec((node) => console.log(node.value));
-// newTree.inorder((node) => console.log(node.value));
-// newTree.preorder((node) => console.log(node.value));
+newTree.inorder((node) => console.log(node.value));
+newTree.inorder();
+newTree.preorder((node) => console.log(node.value));
+newTree.preorder();
 newTree.postorder((node) => console.log(node.value));
+newTree.postorder();
