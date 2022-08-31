@@ -218,6 +218,14 @@ const Tree = (arr) => {
     }
   };
 
+  const preorder = (fn, node = root) => {
+    fn(node);
+    if (node.left && node.right) {
+      preorder(fn, node.left);
+      preorder(fn, node.right);
+    }
+  };
+
   return {
     root,
     insertNode,
@@ -226,6 +234,7 @@ const Tree = (arr) => {
     levelOrder,
     levelOrderRec,
     inorder,
+    preorder,
   };
 };
 
@@ -252,4 +261,5 @@ console.log(newTree.find(3));
 // newTree.levelOrder((node) => console.log(node.value));
 // console.log(newTree.levelOrder());
 // newTree.levelOrderRec((node) => console.log(node.value));
-newTree.inorder((node) => console.log(node.value));
+// newTree.inorder((node) => console.log(node.value));
+newTree.preorder((node) => console.log(node.value));
