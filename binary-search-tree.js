@@ -201,7 +201,32 @@ const Tree = (arr) => {
     return levelOrderRec(fn, q.pop(), q);
   };
 
-  return { root, insertNode, deleteNode, find, levelOrder, levelOrderRec };
+  const inorder = (fn, node = root) => {
+    if (node.left === null && node.right === null) {
+      return fn(node);
+    }
+    if (node.left && node.right) {
+      inorder(fn, node.left);
+      fn(node);
+      inorder(fn, node.right);
+    } else if (node.left && node.right === null) {
+      inorder(fn, node.left);
+      fn(node);
+    } else if (node.right && node.left === null) {
+      inorder(fn, node.right);
+      fn(node);
+    }
+  };
+
+  return {
+    root,
+    insertNode,
+    deleteNode,
+    find,
+    levelOrder,
+    levelOrderRec,
+    inorder,
+  };
 };
 
 const newTree = Tree([5, 21, 4, 5, 2, 1, 19, 16, 3]);
@@ -226,5 +251,5 @@ console.log(newTree.find(3));
 
 // newTree.levelOrder((node) => console.log(node.value));
 // console.log(newTree.levelOrder());
-
-newTree.levelOrderRec((node) => console.log(node.value));
+// newTree.levelOrderRec((node) => console.log(node.value));
+newTree.inorder((node) => console.log(node.value));
