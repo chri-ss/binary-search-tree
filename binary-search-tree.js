@@ -249,6 +249,32 @@ const Tree = (arr) => {
       return console.log(noFunc);
     }
   };
+
+  const height = (node) => {
+    let counter = 0;
+    let max = 0;
+
+    const findHeight = (node) => {
+      if (node.left === null && node.right === null) {
+        if (max < counter) {
+          max = counter;
+        }
+      }
+      counter++;
+      if (node.left && node.right) {
+        findHeight(node.left);
+        findHeight(node.right);
+      } else if (node.left && node.right === null) {
+        findHeight(node.left);
+      } else if (node.right && node.left === null) {
+        findHeight(node.right);
+      }
+      counter--;
+    };
+
+    findHeight(node);
+    return max;
+  };
   return {
     root,
     insertNode,
@@ -259,6 +285,7 @@ const Tree = (arr) => {
     inorder,
     preorder,
     postorder,
+    height,
   };
 };
 
@@ -291,3 +318,11 @@ newTree.preorder((node) => console.log(node.value));
 newTree.preorder();
 newTree.postorder((node) => console.log(node.value));
 newTree.postorder();
+newTree.insertNode(newTree.root, 18);
+newTree.insertNode(newTree.root, 7);
+newTree.insertNode(newTree.root, 8);
+newTree.insertNode(newTree.root, 9);
+newTree.insertNode(newTree.root, 10);
+
+prettyPrint(newTree.root);
+console.log(newTree.height(newTree.find(16)));
