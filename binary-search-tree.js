@@ -251,6 +251,9 @@ const Tree = (arr) => {
   };
 
   const height = (node) => {
+    if (!node) {
+      return false;
+    }
     let counter = 0;
     let max = 0;
 
@@ -275,6 +278,35 @@ const Tree = (arr) => {
     findHeight(node);
     return max;
   };
+
+  const depth = (node) => {
+    if (!node) {
+      return false;
+    }
+    let counter = 0;
+    let max = 0;
+    const value = node.value;
+
+    const findDepth = (node) => {
+      if (node.value === value) {
+        max = counter;
+      } else if (node.left === null && node.right === null) {
+        return;
+      }
+      counter++;
+      if (node.left && node.right) {
+        findDepth(node.left);
+        findDepth(node.right);
+      } else if (node.left && node.right === null) {
+        findDepth(node.left);
+      } else if (node.right && node.left === null) {
+        findDepth(node.right);
+      }
+      counter--;
+    };
+    findDepth(root);
+    return max;
+  };
   return {
     root,
     insertNode,
@@ -286,6 +318,7 @@ const Tree = (arr) => {
     preorder,
     postorder,
     height,
+    depth,
   };
 };
 
@@ -326,3 +359,4 @@ newTree.insertNode(newTree.root, 10);
 
 prettyPrint(newTree.root);
 console.log(newTree.height(newTree.find(16)));
+console.log(newTree.depth(newTree.find(8)));
