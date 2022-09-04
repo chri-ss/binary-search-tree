@@ -47,18 +47,6 @@ const removeDuplicates = (arr) => {
   return newArr;
 };
 
-//pretty print
-
-const prettyPrint = (node, prefix = "", isLeft = true) => {
-  if (node.right !== null) {
-    prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
-  }
-  console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.value}`);
-  if (node.left !== null) {
-    prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
-  }
-};
-
 //Node factory
 
 const Node = (value) => {
@@ -85,19 +73,29 @@ const Tree = (arr) => {
     return newRoot;
   };
 
-  const root = buildTree(arr, 0, arr.length - 1);
+  let root = buildTree(arr, 0, arr.length - 1);
 
-  const insertNode = (root, value) => {
-    if (root === null) {
-      root = Node(value);
-      return root;
+  const prettyPrint = (node = root, prefix = "", isLeft = true) => {
+    if (node.right !== null) {
+      prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
     }
-    if (value < root.value) {
-      root.left = insertNode(root.left, value);
-    } else if (value > root.value) {
-      root.right = insertNode(root.right, value);
+    console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.value}`);
+    if (node.left !== null) {
+      prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
     }
-    return root;
+  };
+
+  const insertNode = (value, node = root) => {
+    if (node === null) {
+      node = Node(value);
+      return node;
+    }
+    if (value < node.value) {
+      node.left = insertNode(value, node.left);
+    } else if (value > node.value) {
+      node.right = insertNode(value, node.right);
+    }
+    return node;
   };
 
   const findSuccessor = (node) => {
@@ -125,26 +123,26 @@ const Tree = (arr) => {
     }
   };
 
-  const deleteNode = (root, value) => {
-    if (root === null) {
+  const deleteNode = (value, node = root) => {
+    if (node === null) {
       return;
     }
-    if (value < root.value) {
-      root.left = deleteNode(root.left, value);
-    } else if (value > root.value) {
-      root.right = deleteNode(root.right, value);
+    if (value < node.value) {
+      node.left = deleteNode(value, node.left);
+    } else if (value > node.value) {
+      node.right = deleteNode(value, node.right);
     } else {
-      if (root.left === null && root.right === null) {
-        root = null;
-      } else if (root.right === null && root.left) {
-        root = root.left;
-      } else if (root.left === null && root.right) {
-        root = root.right;
-      } else if (root.left && root.right) {
-        root.value = findSuccessor(root.right).value;
+      if (node.left === null && node.right === null) {
+        node = null;
+      } else if (node.right === null && node.left) {
+        node = node.left;
+      } else if (node.left === null && node.right) {
+        node = node.right;
+      } else if (node.left && node.right) {
+        node.value = findSuccessor(node.right).value;
       }
     }
-    return root;
+    return node;
   };
 
   const find = (value, node = root) => {
@@ -221,7 +219,7 @@ const Tree = (arr) => {
       fn(node, noFunc);
     }
     if (node === root) {
-      return console.log(noFunc);
+      return noFunc;
     }
   };
 
@@ -232,7 +230,7 @@ const Tree = (arr) => {
       preorder(fn, node.right, noFunc);
     }
     if (node === root) {
-      return console.log(noFunc);
+      return noFunc;
     }
   };
 
@@ -246,7 +244,7 @@ const Tree = (arr) => {
       fn(node, noFunc);
     }
     if (node === root) {
-      return console.log(noFunc);
+      return noFunc;
     }
   };
 
@@ -307,8 +305,25 @@ const Tree = (arr) => {
     findDepth(root);
     return max;
   };
+
+  const isBalanced = () => {
+    let left = root.left ? root.left : 0;
+    let right = root.right ? root.right : 0;
+    if (height(left) + 1 < height(right) || height(right) + 1 < height(left)) {
+      return false;
+    }
+    return true;
+  };
+
+  const rebalance = () => {
+    if (!isBalanced()) {
+      const newArray = inorder();
+      console.log(newArray);
+      root = buildTree(newArray, 0, newArray.length - 1);
+    }
+  };
   return {
-    root,
+    prettyPrint,
     insertNode,
     deleteNode,
     find,
@@ -319,44 +334,52 @@ const Tree = (arr) => {
     postorder,
     height,
     depth,
+    isBalanced,
+    rebalance,
   };
 };
 
 const newTree = Tree([5, 21, 4, 5, 2, 1, 19, 16, 3]);
 
-prettyPrint(newTree.root);
-newTree.insertNode(newTree.root, 13);
-prettyPrint(newTree.root);
+newTree.prettyPrint();
+newTree.insertNode(13);
+newTree.prettyPrint();
 
-newTree.deleteNode(newTree.root, 13);
-prettyPrint(newTree.root);
+newTree.deleteNode(13);
+newTree.prettyPrint();
 
-newTree.insertNode(newTree.root, 17);
-prettyPrint(newTree.root);
+newTree.insertNode(17);
+newTree.prettyPrint();
 
-newTree.insertNode(newTree.root, 6);
-prettyPrint(newTree.root);
+newTree.insertNode(6);
+newTree.prettyPrint();
 
-newTree.deleteNode(newTree.root, 4);
-prettyPrint(newTree.root);
+newTree.deleteNode(4);
+newTree.prettyPrint();
 
 console.log(newTree.find(3));
 
-// newTree.levelOrder((node) => console.log(node.value));
-// console.log(newTree.levelOrder());
-// newTree.levelOrderRec((node) => console.log(node.value));
+newTree.levelOrder((node) => console.log(node.value));
+console.log(newTree.levelOrder());
+newTree.levelOrderRec((node) => console.log(node.value));
 newTree.inorder((node) => console.log(node.value));
-newTree.inorder();
+console.log(newTree.inorder());
 newTree.preorder((node) => console.log(node.value));
-newTree.preorder();
+console.log(newTree.preorder());
 newTree.postorder((node) => console.log(node.value));
-newTree.postorder();
-newTree.insertNode(newTree.root, 18);
-newTree.insertNode(newTree.root, 7);
-newTree.insertNode(newTree.root, 8);
-newTree.insertNode(newTree.root, 9);
-newTree.insertNode(newTree.root, 10);
+console.log(newTree.postorder());
+newTree.insertNode(18);
+newTree.insertNode(7);
+newTree.insertNode(8);
+newTree.insertNode(9);
+newTree.insertNode(10);
+newTree.insertNode(11);
+newTree.insertNode(12);
 
-prettyPrint(newTree.root);
+
+newTree.prettyPrint();
 console.log(newTree.height(newTree.find(16)));
 console.log(newTree.depth(newTree.find(8)));
+console.log(newTree.isBalanced());
+console.log(newTree.rebalance());
+newTree.prettyPrint();
