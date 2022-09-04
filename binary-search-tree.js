@@ -307,6 +307,15 @@ const Tree = (arr) => {
     findDepth(root);
     return max;
   };
+
+  const isBalanced = () => {
+    let left = root.left ? root.left : 0;
+    let right = root.right ? root.right : 0;
+    if (height(left) + 1 < height(right) || height(right) + 1 < height(left)) {
+      return false;
+    }
+    return true;
+  };
   return {
     root,
     insertNode,
@@ -319,6 +328,7 @@ const Tree = (arr) => {
     postorder,
     height,
     depth,
+    isBalanced,
   };
 };
 
@@ -352,11 +362,8 @@ newTree.preorder();
 newTree.postorder((node) => console.log(node.value));
 newTree.postorder();
 newTree.insertNode(newTree.root, 18);
-newTree.insertNode(newTree.root, 7);
-newTree.insertNode(newTree.root, 8);
-newTree.insertNode(newTree.root, 9);
-newTree.insertNode(newTree.root, 10);
 
 prettyPrint(newTree.root);
-console.log(newTree.height(newTree.find(16)));
-console.log(newTree.depth(newTree.find(8)));
+// console.log(newTree.height(newTree.find(16)));
+// console.log(newTree.depth(newTree.find(8)));
+console.log(newTree.isBalanced());
