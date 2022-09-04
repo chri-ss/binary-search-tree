@@ -1,0 +1,20 @@
+{
+  "name": "binary-search-tree",
+  "version": "1.0.0",
+  "description": "Program to convert a sorted array to a balanced BST",
+  "main": "binary-search-tree.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chri-ss/binary-search-tree.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chri-ss/binary-search-tree/issues"
+  },
+  "homepage": "https://github.com/chri-ss/binary-search-tree#readme",
+  "type": "module"
+}

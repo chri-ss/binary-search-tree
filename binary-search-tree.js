@@ -318,7 +318,6 @@ const Tree = (arr) => {
   const rebalance = () => {
     if (!isBalanced()) {
       const newArray = inorder();
-      console.log(newArray);
       root = buildTree(newArray, 0, newArray.length - 1);
     }
   };
@@ -339,47 +338,4 @@ const Tree = (arr) => {
   };
 };
 
-const newTree = Tree([5, 21, 4, 5, 2, 1, 19, 16, 3]);
-
-newTree.prettyPrint();
-newTree.insertNode(13);
-newTree.prettyPrint();
-
-newTree.deleteNode(13);
-newTree.prettyPrint();
-
-newTree.insertNode(17);
-newTree.prettyPrint();
-
-newTree.insertNode(6);
-newTree.prettyPrint();
-
-newTree.deleteNode(4);
-newTree.prettyPrint();
-
-console.log(newTree.find(3));
-
-newTree.levelOrder((node) => console.log(node.value));
-console.log(newTree.levelOrder());
-newTree.levelOrderRec((node) => console.log(node.value));
-newTree.inorder((node) => console.log(node.value));
-console.log(newTree.inorder());
-newTree.preorder((node) => console.log(node.value));
-console.log(newTree.preorder());
-newTree.postorder((node) => console.log(node.value));
-console.log(newTree.postorder());
-newTree.insertNode(18);
-newTree.insertNode(7);
-newTree.insertNode(8);
-newTree.insertNode(9);
-newTree.insertNode(10);
-newTree.insertNode(11);
-newTree.insertNode(12);
-
-
-newTree.prettyPrint();
-console.log(newTree.height(newTree.find(16)));
-console.log(newTree.depth(newTree.find(8)));
-console.log(newTree.isBalanced());
-console.log(newTree.rebalance());
-newTree.prettyPrint();
+export default Tree;
