@@ -1,6 +1,8 @@
 # binary-search-tree
 JavaScript program that outputs binary search trees.
 
+Run `node driver.js` to run with nodejs.
+
 ## Methods included
 
 - prettyPrint(): Prints a visual representation of the tree to a console.
